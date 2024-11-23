@@ -1,8 +1,17 @@
 from flask import Flask, jsonify
+from flask_cors import CORS
+
 from services import get_all_reviews, calculate_percentages
 
 app = Flask(__name__)
 
+CORS(app, resources={
+    r"/api/*": {  # Aplica CORS solo a rutas que comienzan con /api/
+        "origins": ["http://localhost:3000"],  # Orígenes permitidos
+        "methods": ["GET", "POST", "PUT", "DELETE"],  # Métodos HTTP permitidos
+        "allow_headers": ["Content-Type", "Authorization"],  # Encabezados permitidos
+    }
+})
 
 @app.route('/api/v1/reviews/hola', methods=['GET'])
 def say_hello():
