@@ -1,0 +1,35 @@
+# Archivos de configuración de JetBrains/IntelliJ
+.idea/
+
+# Archivos de compilación de Python (pycache, archivos .pyc)
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Archivos temporales y de configuración de Python
+*.db
+*.sqlite3
+
+# Entorno virtual
+venv/
+env/
+*.env
+*.venv
+
+# Archivos de configuración de sistemas operativos
+.DS_Store
+
+# Archivos de configuración de PyCharm
+.idea/
+
+# Archivos de configuración de la terminal (shell)
+*.log
+
+# Archivos generados por herramientas de empaquetado o dependencias
+*.egg-info/
+dist/
+build/
+
+
+
