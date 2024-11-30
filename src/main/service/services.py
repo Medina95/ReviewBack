@@ -4,6 +4,8 @@ from src.main.model.models import Review
 from keras.src.saving.saving_api import load_model
 from keras.src.legacy.preprocessing.text import tokenizer_from_json
 import json
+from datetime import datetime
+
 from collections import Counter
 
 import numpy as np
@@ -102,8 +104,6 @@ def reviewToxicFromData(data, labels, max_len=40, model=model_IA, tokenizer=toke
         for prob, idx in zip(predicted_probs, predicted_classes)
     ]
 
-    #AQUI PARA ABAJO DESARROLLEN PARA QUE SE GUARDE EN LA BASE DE DATOS
-
     # Crear un DataFrame con los resultados
     results = pd.DataFrame({
         'Text': text_data,
@@ -112,4 +112,31 @@ def reviewToxicFromData(data, labels, max_len=40, model=model_IA, tokenizer=toke
         'Probability': predicted_probs
     })
 
+    ## Guarda en MongoDB =D
+    save_predictions_to_db(results)
+
     return results
+
+
+def save_predictions_to_db(results, collection=reviews_collection):
+    """
+    Guarda las predicciones en la base de datos MongoDB.
+    """
+    # Convertir cada fila del DataFrame en un documento de MongoDB
+    documents = []
+    for _, row in results.iterrows():
+        document = {
+            "text": row['Text'],
+            "predicted_class": row['Predicted Class'],
+            "probability": row['Probability'],
+            "rating": row['Rating'],
+            "processed_date": datetime.now(),
+        }
+        documents.append(document)
+
+    # Insertar en MongoDB
+    if documents:
+        collection.insert_many(documents)
+        print(f"{len(documents)} documentos insertados en la base de datos.")
+    else:
+        print("No hay datos para guardar.")

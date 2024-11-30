@@ -47,6 +47,34 @@ def predict_toxicity():
         return jsonify({"error": str(e)}), 500
 
 
+@app.route('/api/v1/reviews/uploadDataFrame', methods=['POST'])
+def upload_csv():
+    try:
+        # Verificar que se envió un archivo
+        if 'file' not in request.files:
+            return jsonify({"error": "Archivo CSV no enviado."}), 400
+
+        file = request.files['file']
+
+        # Verificar que el archivo no esté vacío
+        if file.filename == '':
+            return jsonify({"error": "Nombre del archivo vacío."}), 400
+
+        # Leer el archivo CSV como DataFrame
+        data = pd.read_csv(file)
+        text_column = data.columns[0]  # Primera columna como texto
+        rating_column = data.columns[1]  # Segunda columna como rating
+        labels = {"Text": text_column, "Rating": rating_column}
+
+        # Procesar datos usando la función
+        results = reviewToxicFromData(data, labels)
+
+        # Responder al cliente con los resultados
+        return jsonify(results.to_dict(orient='records'))
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8000)
 
