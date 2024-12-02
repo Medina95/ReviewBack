@@ -62,9 +62,11 @@ def upload_csv():
 
         # Leer el archivo CSV como DataFrame
         data = pd.read_csv(file)
-        text_column = data.columns[0]  # Primera columna como texto
-        rating_column = data.columns[1]  # Segunda columna como rating
+        text_column = data.columns[7]  # Primera columna como texto
+        rating_column = data.columns[4]  # Segunda columna como rating
         labels = {"Text": text_column, "Rating": rating_column}
+        print(labels)
+        print(data.shape)
 
         # Procesar datos usando la función
         results = reviewToxicFromData(data, labels)
@@ -76,5 +78,5 @@ def upload_csv():
         return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8000)
+    app.run(host='0.0.0.0', port=8000,debug=True)
 

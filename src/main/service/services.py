@@ -91,7 +91,7 @@ def reviewToxicFromData(data, labels, max_len=40, model=model_IA, tokenizer=toke
     text_padded = pad_sequences(text_sequences, maxlen=max_len)  # Aplicar padding
 
     # Predicción
-    predictions = model.predict(text_padded)  # Predecir probabilidades para cada clase
+    predictions = model.predict(text_padded, batch_size=32)  # Predecir probabilidades para cada clase
 
     # Obtener la clase con la mayor probabilidad
     predicted_classes = predictions.argmax(axis=-1)  # Índices de las clases más probables
@@ -108,12 +108,11 @@ def reviewToxicFromData(data, labels, max_len=40, model=model_IA, tokenizer=toke
     results = pd.DataFrame({
         'Text': text_data,
         'Predicted Class': predicted_labels,
-        'Rating': ratings,
-        'Probability': predicted_probs
+        'Rating': ratings
     })
 
     ## Guarda en MongoDB =D
-    save_predictions_to_db(results)
+    #save_predictions_to_db(results)
 
     return results
 
