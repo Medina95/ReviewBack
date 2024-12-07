@@ -55,6 +55,15 @@ def upload_csv():
             return jsonify({"error": "Archivo CSV no enviado."}), 400
 
         file = request.files['file']
+        print("Archivo recibido:", file.filename)
+        labels = json.loads(request.form.get("labels"))
+
+        # Acceder a las posiciones directamente
+        review_column = labels[0]
+        rating_column = labels[1]
+        # Obtener 'labels' del formulario (se espera que sea una cadena JSON)
+        labels = {"Text": review_column, "Rating": rating_column}
+       # labels = {"Text": request.get_json().get("Text"), "Rating": request.get_json().get("Rating")}
 
         # Verificar que el archivo no esté vacío
         if file.filename == '':
@@ -62,20 +71,15 @@ def upload_csv():
 
         # Leer el archivo CSV como DataFrame
         data = pd.read_csv(file)
-        text_column = data.columns[7]  # Primera columna como texto
-        rating_column = data.columns[4]  # Segunda columna como rating
-        labels = {"Text": text_column, "Rating": rating_column}
-        print(labels)
         print(data.shape)
-
-        # Procesar datos usando la función
+        # Procesar los datos
         results = reviewToxicFromData(data, labels)
-
         # Responder al cliente con los resultados
         return jsonify(results.to_dict(orient='records'))
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8000,debug=True)
