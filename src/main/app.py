@@ -10,7 +10,7 @@ app = Flask(__name__)
 # Configuración de CORS
 CORS(app, resources={
     r"/api/*": {  # Aplica CORS solo a rutas que comienzan con /api/
-        "origins": ["http://localhost:3000"],  # Orígenes permitidos
+        "origins": ["http://ec2-23-22-31-145.compute-1.amazonaws.com"],  # Orígenes permitidos
         "methods": ["GET", "POST", "PUT", "DELETE"],  # Métodos HTTP permitidos
         "allow_headers": ["Content-Type", "Authorization"],  # Encabezados permitidos
     }
