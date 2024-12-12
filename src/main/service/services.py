@@ -20,7 +20,7 @@ reviews_collection = db["reviews"]
 
 # Cargar modelo y tokenizer
 #model_IA = load_model("service/toxic_model.keras")
-load_model("/home/ec2-user/ReviewBack/src/main/service/toxic_model.keras")
+model_IA =load_model("/home/ec2-user/ReviewBack/src/main/service/toxic_model.keras")
 # Cargar el tokenizador
 #with open("service/tokenizer.json", "r") as f:
 
