@@ -22,7 +22,10 @@ reviews_collection = db["reviews"]
 #model_IA = load_model("service/toxic_model.keras")
 load_model("/home/ec2-user/ReviewBack/src/main/service/toxic_model.keras")
 # Cargar el tokenizador
-with open("service/tokenizer.json", "r") as f:
+#with open("service/tokenizer.json", "r") as f:
+
+with open("/home/ec2-user/ReviewBack/src/main/service/tokenizer.json", "r") as f:
+
     tokenizer_json = json.load(f)
 token = tokenizer_from_json(tokenizer_json)
 
