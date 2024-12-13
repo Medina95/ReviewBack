@@ -1,7 +1,9 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
+
 from src.main.service.services import *
 import os
+import ssl
 
 os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
 
@@ -15,7 +17,9 @@ CORS(app, resources={
         "allow_headers": ["Content-Type", "Authorization"],  # Encabezados permitidos
     }
 })
-
+context = ssl.SSLContext(ssl.PROTOCOL_TLS)
+context.load_cert_chain(certfile='/etc/letsencrypt/live/reviewai.duckdns.org/fullchain.pem',
+                        keyfile='/etc/letsencrypt/live/reviewai.duckdns.org/privkey.pem')
 @app.route('/api/v1/reviews/hola', methods=['GET'])
 def say_hello():
     return jsonify({"message": "Hola"})
@@ -82,5 +86,5 @@ def upload_csv():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8000,debug=True, ssl_context='adhoc' )
+    app.run(host='0.0.0.0', port=8000,debug=True,  ssl_context=context )
 
